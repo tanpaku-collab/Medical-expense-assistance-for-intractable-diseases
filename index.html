@@ -112,13 +112,11 @@
     .ckd-gfr-main { background: #9e9e9e; color: #fff; font-weight: 700; writing-mode: horizontal-tb; font-size: clamp(10px,2.5vw,12px); }
     .ckd-g-label  { background: #bdbdbd; color: #333; font-weight: 700; }
     .ckd-g-desc   { background: #e0e0e0; color: #333; font-size: clamp(9px,2.4vw,12px); }
-    /* heat cells — match original colors exactly */
-    .hc-gd  { background: #4caf50; }   /* dark green  G1-A1, G2-A1 */
-    .hc-g   { background: #8bc34a; }   /* light green G1-A2, G2-A2 */
-    .hc-y   { background: #ffee58; }   /* yellow      G1-A3, G2-A3, G3a-A1 */
-    .hc-yo  { background: #ffca28; }   /* yellow-org  G3a-A2, G3b-A1 */
-    .hc-o   { background: #ffa726; }   /* orange      G3a-A3, G3b-A2, G4-A1 */
-    .hc-r   { background: #ef5350; }   /* red         G3b-A3, G4-A2~A3, G5 all */
+    /* heat cells — 4-level risk colors */
+    .hc-green  { background: #4caf50; }   /* 低リスク    G1-A1, G2-A1 */
+    .hc-yellow { background: #ffee58; }   /* 中等度リスク G1-A2, G2-A2, G3a-A1 */
+    .hc-orange { background: #ff9800; }   /* 高リスク    G1-A3, G2-A3, G3a-A2, G3b-A1 */
+    .hc-red    { background: #ef5350; color:#fff; } /* 最高リスク  G3a-A3, G3b-A2~A3, G4 all, G5 all */
     /* urine ratio subrow */
     .ckd-ratio { background: #e0e0e0; color: #333; font-size: clamp(9px,2.4vw,11px); }
     .ckd-hint {
@@ -160,8 +158,9 @@
     /* grade blocks */
     .cp-grades { display: flex; gap: 10px; margin-bottom: 10px; }
     .cp-gc { flex: 1; border-radius: 50%; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80px; }
-    .cp-gc .pts  { font-size: clamp(10px,2.8vw,13px); font-weight: 700; margin-bottom: 2px; }
-    .cp-gc .grd  { font-size: clamp(13px,3.8vw,17px); font-weight: 900; }
+    .cp-gc .pts  { font-size: clamp(10px,2.8vw,12px); font-weight: 600; margin-bottom: 3px; }
+    .cp-gc .grd  { font-size: clamp(14px,4vw,18px); font-weight: 900; }
+    .cp-gc .lbl  { font-size: clamp(10px,2.6vw,12px); font-weight: 600; margin-top: 3px; opacity: 0.85; }
     .ga { background: #ef9a9a; color: #b71c1c; }
     .gb { background: #ffe082; color: #e65100; }
     .gc { background: #90caf9; color: #0d47a1; }
@@ -210,10 +209,6 @@
             <div class="cb-sq"></div>
             <div class="cb-label">ステロイド抵抗性（十分量のステロイド治療〈初回投与量（0.5〜0.6mg/kg）〉を 6 か月間行っても寛解導入できず、臓器障害が残る場合）</div>
           </div>
-          <div class="cb-row">
-            <div class="cb-sq"></div>
-            <div class="cb-label">いずれにも該当しない</div>
-          </div>
         </div>
 
         <!-- 下段：臓器障害の程度 -->
@@ -243,11 +238,11 @@
       <div class="ckd-scroll">
         <table class="ckd-tbl">
           <thead>
-            <!-- Row 1: blank × 2, 蛋白尿区分 (span 3) -->
+            <!-- Row 1: GFR軸ラベル + 蛋白尿区分（大見出し） -->
             <tr>
-              <th rowspan="4" class="ckd-gfr-main" style="width:14%;">GFR区分<br><span style="font-size:9px;font-weight:400;">(mL/分<br>/1.73m²)</span></th>
-              <th rowspan="2" class="ckd-th-top" style="width:24%;"></th>
-              <th colspan="3" class="ckd-th-top">蛋白尿区分</th>
+              <th rowspan="4" class="ckd-gfr-main" style="width:13%;">eGFR<br><span style="font-size:9px;font-weight:400;">(mL/min<br>/1.73m²)</span></th>
+              <th rowspan="4" class="ckd-th-top" style="width:24%;"></th>
+              <th colspan="3" class="ckd-th-top">蛋白尿区分<br><span style="font-size:10px;font-weight:400;">尿蛋白/Cr比（g/gCr）</span></th>
             </tr>
             <!-- Row 2: A1 / A2 / A3 -->
             <tr>
@@ -255,56 +250,62 @@
               <th class="ckd-th-a">A2</th>
               <th class="ckd-th-a">A3</th>
             </tr>
-            <!-- Row 3: 尿蛋白定量 label row -->
+            <!-- Row 3: 蛋白尿の程度ラベル -->
             <tr>
-              <td class="ckd-sub"></td>
               <td class="ckd-sub">正常</td>
               <td class="ckd-sub">軽度蛋白尿</td>
               <td class="ckd-sub">高度蛋白尿</td>
             </tr>
-            <!-- Row 4: 尿蛋白/Cr比 -->
+            <!-- Row 4: 数値レンジ -->
             <tr>
-              <td class="ckd-ratio">尿蛋白/Cr比（g/gCr）</td>
               <td class="ckd-ratio">0.15未満</td>
               <td class="ckd-ratio">0.15〜0.49</td>
               <td class="ckd-ratio">0.50以上</td>
             </tr>
           </thead>
           <tbody>
+            <!-- 色定義：左列=緑緑黄橙赤赤 / 中列=黄黄橙赤赤赤 / 右列=橙橙赤赤赤赤 -->
             <tr>
               <td class="ckd-g-label">G1</td>
-              <td class="ckd-g-desc">正常または高値　≥90</td>
-              <td class="hc-gd"></td><td class="hc-g"></td><td class="hc-y"></td>
+              <td class="ckd-g-desc">正常または高値<br>≥90</td>
+              <td class="hc-green"></td><td class="hc-yellow"></td><td class="hc-orange"></td>
             </tr>
             <tr>
               <td class="ckd-g-label">G2</td>
-              <td class="ckd-g-desc">正常または軽度低下　60〜89</td>
-              <td class="hc-gd"></td><td class="hc-g"></td><td class="hc-y"></td>
+              <td class="ckd-g-desc">正常または軽度低下<br>60〜89</td>
+              <td class="hc-green"></td><td class="hc-yellow"></td><td class="hc-orange"></td>
             </tr>
             <tr>
               <td class="ckd-g-label">G3a</td>
-              <td class="ckd-g-desc">軽度〜中等度低下　45〜59</td>
-              <td class="hc-y"></td><td class="hc-yo"></td><td class="hc-o"></td>
+              <td class="ckd-g-desc">軽度〜中等度低下<br>45〜59</td>
+              <td class="hc-yellow"></td><td class="hc-orange"></td><td class="hc-red"></td>
             </tr>
             <tr>
               <td class="ckd-g-label">G3b</td>
-              <td class="ckd-g-desc">中等度〜高度低下　30〜44</td>
-              <td class="hc-yo"></td><td class="hc-o"></td><td class="hc-r"></td>
+              <td class="ckd-g-desc">中等度〜高度低下<br>30〜44</td>
+              <td class="hc-orange"></td><td class="hc-red"></td><td class="hc-red"></td>
             </tr>
             <tr>
               <td class="ckd-g-label">G4</td>
-              <td class="ckd-g-desc">高度低下　15〜29</td>
-              <td class="hc-o"></td><td class="hc-r"></td><td class="hc-r"></td>
+              <td class="ckd-g-desc">高度低下<br>15〜29</td>
+              <td class="hc-red"></td><td class="hc-red"></td><td class="hc-red"></td>
             </tr>
             <tr>
               <td class="ckd-g-label">G5</td>
-              <td class="ckd-g-desc">末期腎不全（ESKD）　&lt;15</td>
-              <td class="hc-r"></td><td class="hc-r"></td><td class="hc-r"></td>
+              <td class="ckd-g-desc">末期腎不全（ESKD）<br>&lt;15</td>
+              <td class="hc-red"></td><td class="hc-red"></td><td class="hc-red"></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p class="ckd-hint">🔴 赤のセル（G3b-A3 / G4-A2以上 / G5全域）が難病助成の腎臓重症度基準に該当します。</p>
+      <!-- 凡例 -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:11px;">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#4caf50;display:inline-block;border-radius:2px;"></span>低リスク</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#ffee58;border:1px solid #ccc;display:inline-block;border-radius:2px;"></span>中等度リスク</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#ff9800;display:inline-block;border-radius:2px;"></span>高リスク</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#ef5350;display:inline-block;border-radius:2px;"></span>最高リスク</span>
+      </div>
+      <p class="ckd-hint">🔴 赤（最高リスク）のセルが難病助成の腎臓重症度基準に該当します。</p>
     </div>
   </div>
 
@@ -361,19 +362,22 @@
         </table>
       </div>
 
-      <!-- Grade circles -->
+      <!-- Grade判定ブロック -->
       <div class="cp-grades">
         <div class="cp-gc ga">
-          <div class="pts">5-6点</div>
-          <div class="grd">GradeA</div>
+          <div class="pts">合計 5〜6点</div>
+          <div class="grd">Grade A</div>
+          <div class="lbl">代償性</div>
         </div>
         <div class="cp-gc gb">
-          <div class="pts">7-9点</div>
-          <div class="grd">GradeB</div>
+          <div class="pts">合計 7〜9点</div>
+          <div class="grd">Grade B</div>
+          <div class="lbl">非代償性</div>
         </div>
         <div class="cp-gc gc">
-          <div class="pts">10-15点</div>
-          <div class="grd">GradeC</div>
+          <div class="pts">合計 10〜15点</div>
+          <div class="grd">Grade C</div>
+          <div class="lbl">非代償性</div>
         </div>
       </div>
 
