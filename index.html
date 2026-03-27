@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>IgG4-RD 重症度分類 参照用マニュアル</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --border: #d8dee8;
+      --accent-primary: #1a4a7a;
+      --accent-light: #e8f2fb;
+      --shadow-md: 0 4px 16px rgba(26,74,122,0.12);
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: #1a2535; -webkit-font-smoothing: antialiased; }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0e2f52 0%, #1a4a7a 55%, #2e7eb8 100%);
+      color: #fff; padding: 20px 16px 18px; text-align: center;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 10px rgba(14,47,82,0.35);
+    }
+    header .subtitle { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 5px; }
+    header h1 { font-family: 'Noto Serif JP', serif; font-size: clamp(15px,4.5vw,22px); font-weight: 700; letter-spacing: .04em; }
+    header .disease-tag { display: inline-block; margin-top: 8px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 20px; padding: 3px 12px; font-size: 11px; color: rgba(255,255,255,.88); }
+
+    main { max-width: 860px; margin: 0 auto; padding: 20px 12px 48px; display: flex; flex-direction: column; gap: 24px; }
+
+    .section-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-md); overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-light); border-bottom: 1px solid #cde0f4; }
+    .section-badge { background: var(--accent-primary); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 3px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+    .section-title { font-size: clamp(12px,3.5vw,15px); font-weight: 600; color: var(--accent-primary); }
+    .section-body { padding: 16px; }
+
+    /* ══════════════════════════════
+       SECTION 1 — 重症度分類
+    ══════════════════════════════ */
+    /* outer bordered box */
+    .s1-outer {
+      border: 1.5px solid #333;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    /* top block: ■ 重症度分類に関する事項 */
+    .s1-top {
+      border-bottom: 1.5px solid #333;
+      padding: 10px 12px 12px;
+    }
+    .s1-heading {
+      font-size: clamp(12px,3.2vw,14px);
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .s1-heading::before { content: "■"; color: #1a2535; }
+
+    /* bottom block: 臓器障害の程度 */
+    .s1-bottom {}
+    .s1-organ-header {
+      background: #f0f0f0;
+      border-bottom: 1px solid #ccc;
+      font-size: clamp(12px,3.2vw,13px);
+      font-weight: 600;
+      padding: 5px 12px;
+    }
+    .s1-organ-body { padding: 10px 12px 12px; }
+
+    /* checkbox row */
+    .cb-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+    .cb-row:last-child { margin-bottom: 0; }
+    .cb-sq {
+      width: 15px; height: 15px; min-width: 15px;
+      border: 1.5px solid #444; border-radius: 2px; margin-top: 1px;
+    }
+    .cb-label { font-size: clamp(11px,3vw,13px); line-height: 1.65; }
+
+    /* organ rows */
+    .org-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; }
+    .org-row:last-child { margin-bottom: 0; }
+    .org-sq { width: 15px; height: 15px; min-width: 15px; border: 1.5px solid #444; border-radius: 2px; margin-top: 1px; }
+    .org-label { font-size: clamp(11px,3vw,13px); line-height: 1.65; }
+    .org-label b { font-weight: 700; }
+
+    /* ══════════════════════════════
+       SECTION 2 — CKD Heat Map
+    ══════════════════════════════ */
+    .ckd-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .ckd-tbl {
+      width: 100%; min-width: 400px;
+      border-collapse: collapse;
+      font-size: clamp(10px,2.8vw,13px);
+    }
+    .ckd-tbl th, .ckd-tbl td {
+      border: 1px solid #aaa;
+      text-align: center;
+      padding: 7px 6px;
+      line-height: 1.4;
+    }
+    /* header row: 蛋白尿区分 label */
+    .ckd-th-top   { background: #616161; color: #fff; font-weight: 700; }
+    .ckd-th-a     { background: #757575; color: #fff; font-weight: 700; font-size: clamp(11px,3vw,14px); }
+    /* subheader: 正常 / 軽度 / 高度 */
+    .ckd-sub      { background: #9e9e9e; color: #fff; font-size: clamp(10px,2.5vw,12px); }
+    /* GFR left column */
+    .ckd-gfr-main { background: #9e9e9e; color: #fff; font-weight: 700; writing-mode: horizontal-tb; font-size: clamp(10px,2.5vw,12px); }
+    .ckd-g-label  { background: #bdbdbd; color: #333; font-weight: 700; }
+    .ckd-g-desc   { background: #e0e0e0; color: #333; font-size: clamp(9px,2.4vw,12px); }
+    /* heat cells — match original colors exactly */
+    .hc-gd  { background: #4caf50; }   /* dark green  G1-A1, G2-A1 */
+    .hc-g   { background: #8bc34a; }   /* light green G1-A2, G2-A2 */
+    .hc-y   { background: #ffee58; }   /* yellow      G1-A3, G2-A3, G3a-A1 */
+    .hc-yo  { background: #ffca28; }   /* yellow-org  G3a-A2, G3b-A1 */
+    .hc-o   { background: #ffa726; }   /* orange      G3a-A3, G3b-A2, G4-A1 */
+    .hc-r   { background: #ef5350; }   /* red         G3b-A3, G4-A2~A3, G5 all */
+    /* urine ratio subrow */
+    .ckd-ratio { background: #e0e0e0; color: #333; font-size: clamp(9px,2.4vw,11px); }
+    .ckd-hint {
+      font-size: 11px; color: #c0392b; margin-top: 8px;
+      padding: 6px 10px; background: #fff5f5;
+      border-left: 3px solid #e74c3c; border-radius: 3px;
+    }
+
+    /* ══════════════════════════════
+       SECTION 3 — Child-Pugh
+    ══════════════════════════════ */
+    .cp-title-bar {
+      text-align: center;
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(15px,4vw,20px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1a2535;
+    }
+    .cp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .cp-tbl {
+      width: 100%; min-width: 300px;
+      border-collapse: collapse;
+      font-size: clamp(11px,3vw,13px);
+      margin-bottom: 16px;
+    }
+    .cp-tbl th, .cp-tbl td {
+      border: 1px solid #aaa;
+      text-align: center;
+      padding: 8px 7px;
+      line-height: 1.5;
+    }
+    .cp-th-item { background: #f5f5f5; color: #333; font-weight: 700; text-align: left; padding-left: 10px; }
+    .cp-th-1    { background: #fff9c4; color: #333; font-weight: 700; }
+    .cp-th-2    { background: #ffe0b2; color: #333; font-weight: 700; }
+    .cp-th-3    { background: #ffcdd2; color: #c62828; font-weight: 700; }
+    .cp-td      { background: #fff; }
+
+    /* grade blocks */
+    .cp-grades { display: flex; gap: 10px; margin-bottom: 10px; }
+    .cp-gc { flex: 1; border-radius: 50%; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80px; }
+    .cp-gc .pts  { font-size: clamp(10px,2.8vw,13px); font-weight: 700; margin-bottom: 2px; }
+    .cp-gc .grd  { font-size: clamp(13px,3.8vw,17px); font-weight: 900; }
+    .ga { background: #ef9a9a; color: #b71c1c; }
+    .gb { background: #ffe082; color: #e65100; }
+    .gc { background: #90caf9; color: #0d47a1; }
+
+    /* bottom bar */
+    .cp-bar { display: flex; border-radius: 4px; overflow: hidden; font-size: clamp(11px,3vw,13px); font-weight: 700; }
+    .cp-bar-comp   { background: #00bcd4; color: #fff; padding: 8px 0; text-align: center; flex: 2; }
+    .cp-bar-decomp { background: #ffca28; color: #5d4037; padding: 8px 0; text-align: center; flex: 3; }
+
+    .cp-hint {
+      font-size: 11px; color: #c0392b; margin-top: 10px;
+      padding: 6px 10px; background: #fff5f5;
+      border-left: 3px solid #e74c3c; border-radius: 3px;
+    }
+
+    footer { text-align: center; padding: 16px 12px 28px; font-size: 11px; color: #8a9ab5; border-top: 1px solid var(--border); background: var(--surface); margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="subtitle">難病医療費助成 参照用マニュアル</p>
+  <h1>IgG4-RD 重症度分類</h1>
+  <span class="disease-tag">IgG4関連疾患（指定難病）</span>
+</header>
+
+<main>
+
+  <!-- ══ SECTION 1 ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-badge">SECT 1</span>
+      <span class="section-title">重症度分類に関する事項・臓器障害の程度</span>
+    </div>
+    <div class="section-body">
+      <div class="s1-outer">
+
+        <!-- 上段：重症度分類 -->
+        <div class="s1-top">
+          <div class="s1-heading">重症度分類に関する事項</div>
+          <div class="cb-row">
+            <div class="cb-sq"></div>
+            <div class="cb-label">ステロイド依存性（十分量のステロイド治療を行い寛解導入したが、ステロイド減量や中止で臓器障害が再燃し、離脱できない場合）</div>
+          </div>
+          <div class="cb-row">
+            <div class="cb-sq"></div>
+            <div class="cb-label">ステロイド抵抗性（十分量のステロイド治療〈初回投与量（0.5〜0.6mg/kg）〉を 6 か月間行っても寛解導入できず、臓器障害が残る場合）</div>
+          </div>
+          <div class="cb-row">
+            <div class="cb-sq"></div>
+            <div class="cb-label">いずれにも該当しない</div>
+          </div>
+        </div>
+
+        <!-- 下段：臓器障害の程度 -->
+        <div class="s1-bottom">
+          <div class="s1-organ-header">臓器障害の程度</div>
+          <div class="s1-organ-body">
+            <div class="org-row"><div class="org-sq"></div><div class="org-label"><b>腎臓</b>：CKD 重症度分類ヒートマップが赤の部分の場合</div></div>
+            <div class="org-row"><div class="org-sq"></div><div class="org-label"><b>胆道</b>：閉塞性黄疸が解除できずステント挿入などが必要、または重度の肝硬変 Child Pugh B 以上</div></div>
+            <div class="org-row"><div class="org-sq"></div><div class="org-label"><b>膵臓</b>：閉塞性黄疸が解除できずステント挿入などが必要、または膵石などを伴う重度の膵外分泌機能不全</div></div>
+            <div class="org-row"><div class="org-sq"></div><div class="org-label"><b>呼吸器</b>：PaO₂ が 60Torr 以下の低酸素血症が持続する</div></div>
+            <div class="org-row"><div class="org-sq"></div><div class="org-label"><b>後腹膜・血管</b>：尿路の閉塞が持続する、血管破裂、あるいはその予防のためのステンティング</div></div>
+            <div class="org-row"><div class="org-sq"></div><div class="org-label"><b>下垂体</b>：ホルモンの補充療法が必要</div></div>
+          </div>
+        </div>
+
+      </div><!-- /.s1-outer -->
+    </div>
+  </div>
+
+  <!-- ══ SECTION 2 ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-badge">SECT 2</span>
+      <span class="section-title">【腎臓・CKD分類】CKD 重症度分類ヒートマップ</span>
+    </div>
+    <div class="section-body">
+      <div class="ckd-scroll">
+        <table class="ckd-tbl">
+          <thead>
+            <!-- Row 1: blank × 2, 蛋白尿区分 (span 3) -->
+            <tr>
+              <th rowspan="4" class="ckd-gfr-main" style="width:14%;">GFR区分<br><span style="font-size:9px;font-weight:400;">(mL/分<br>/1.73m²)</span></th>
+              <th rowspan="2" class="ckd-th-top" style="width:24%;"></th>
+              <th colspan="3" class="ckd-th-top">蛋白尿区分</th>
+            </tr>
+            <!-- Row 2: A1 / A2 / A3 -->
+            <tr>
+              <th class="ckd-th-a">A1</th>
+              <th class="ckd-th-a">A2</th>
+              <th class="ckd-th-a">A3</th>
+            </tr>
+            <!-- Row 3: 尿蛋白定量 label row -->
+            <tr>
+              <td class="ckd-sub"></td>
+              <td class="ckd-sub">正常</td>
+              <td class="ckd-sub">軽度蛋白尿</td>
+              <td class="ckd-sub">高度蛋白尿</td>
+            </tr>
+            <!-- Row 4: 尿蛋白/Cr比 -->
+            <tr>
+              <td class="ckd-ratio">尿蛋白/Cr比（g/gCr）</td>
+              <td class="ckd-ratio">0.15未満</td>
+              <td class="ckd-ratio">0.15〜0.49</td>
+              <td class="ckd-ratio">0.50以上</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ckd-g-label">G1</td>
+              <td class="ckd-g-desc">正常または高値　≥90</td>
+              <td class="hc-gd"></td><td class="hc-g"></td><td class="hc-y"></td>
+            </tr>
+            <tr>
+              <td class="ckd-g-label">G2</td>
+              <td class="ckd-g-desc">正常または軽度低下　60〜89</td>
+              <td class="hc-gd"></td><td class="hc-g"></td><td class="hc-y"></td>
+            </tr>
+            <tr>
+              <td class="ckd-g-label">G3a</td>
+              <td class="ckd-g-desc">軽度〜中等度低下　45〜59</td>
+              <td class="hc-y"></td><td class="hc-yo"></td><td class="hc-o"></td>
+            </tr>
+            <tr>
+              <td class="ckd-g-label">G3b</td>
+              <td class="ckd-g-desc">中等度〜高度低下　30〜44</td>
+              <td class="hc-yo"></td><td class="hc-o"></td><td class="hc-r"></td>
+            </tr>
+            <tr>
+              <td class="ckd-g-label">G4</td>
+              <td class="ckd-g-desc">高度低下　15〜29</td>
+              <td class="hc-o"></td><td class="hc-r"></td><td class="hc-r"></td>
+            </tr>
+            <tr>
+              <td class="ckd-g-label">G5</td>
+              <td class="ckd-g-desc">末期腎不全（ESKD）　&lt;15</td>
+              <td class="hc-r"></td><td class="hc-r"></td><td class="hc-r"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="ckd-hint">🔴 赤のセル（G3b-A3 / G4-A2以上 / G5全域）が難病助成の腎臓重症度基準に該当します。</p>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3 ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-badge">SECT 3</span>
+      <span class="section-title">【胆道・肝臓】Child-Pugh 分類</span>
+    </div>
+    <div class="section-body">
+      <div class="cp-title-bar">Child-Pugh分類</div>
+      <div class="cp-scroll">
+        <table class="cp-tbl">
+          <thead>
+            <tr>
+              <th class="cp-th-item" style="width:40%;"></th>
+              <th class="cp-th-1">1点</th>
+              <th class="cp-th-2">2点</th>
+              <th class="cp-th-3">3点</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cp-th-item">脳　症</td>
+              <td class="cp-td">ない</td>
+              <td class="cp-td">軽度</td>
+              <td class="cp-td">時々昏睡</td>
+            </tr>
+            <tr>
+              <td class="cp-th-item">腹　水</td>
+              <td class="cp-td">ない</td>
+              <td class="cp-td">少量 1-2L</td>
+              <td class="cp-td">中等量 3L</td>
+            </tr>
+            <tr>
+              <td class="cp-th-item">血清ビリルビン値（mg/dL）</td>
+              <td class="cp-td">&lt;2.0</td>
+              <td class="cp-td">2.0〜3.0</td>
+              <td class="cp-td">&gt;3.0</td>
+            </tr>
+            <tr>
+              <td class="cp-th-item">血清アルブミン値（g/dL）</td>
+              <td class="cp-td">3.5&lt;</td>
+              <td class="cp-td">2.8〜3.5</td>
+              <td class="cp-td">&lt;2.8</td>
+            </tr>
+            <tr>
+              <td class="cp-th-item">プロトロンビン活性値（%）</td>
+              <td class="cp-td">70&lt;</td>
+              <td class="cp-td">40-70</td>
+              <td class="cp-td">&lt;40</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Grade circles -->
+      <div class="cp-grades">
+        <div class="cp-gc ga">
+          <div class="pts">5-6点</div>
+          <div class="grd">GradeA</div>
+        </div>
+        <div class="cp-gc gb">
+          <div class="pts">7-9点</div>
+          <div class="grd">GradeB</div>
+        </div>
+        <div class="cp-gc gc">
+          <div class="pts">10-15点</div>
+          <div class="grd">GradeC</div>
+        </div>
+      </div>
+
+      <!-- 代償性バー -->
+      <div class="cp-bar">
+        <div class="cp-bar-comp">代償性</div>
+        <div class="cp-bar-decomp">非代償性</div>
+      </div>
+
+      <p class="cp-hint">🔴 <strong>Grade B 以上（7点以上）</strong>が難病助成の胆道重症度基準に該当します。</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  このページは参照用途専用です。最新の診断基準は主治医にご確認ください。
+</footer>
+
+</body>
+</html>
